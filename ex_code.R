@@ -82,6 +82,36 @@ egyptianFrac <- function(p,q)
   return(sprintf("1/%s + %s", quot, breakdown(rev_rem, quot*q)))
 }
 
+# Backtracking Solution - suppose you have 2n people and need each person to meet with
+# another person for 2n-1 weeks such that everyone eventually meets everyone else.
+backTrackSolve <- function(mat, rest, matrix_list = list(), i = 1, j = 2){
+  if (length(rest) < 1)
+    return(c(matrix_list, list(mat)))
+  
+  n <- nrow(mat)
+  
+  while (mat[i,j] != 0)
+  {
+    i <- ifelse(j == n, i+1, i)
+    j <- ifelse(j == n, i+1, j+1)
+  }
+  
+  i2 <- ifelse(j == n, i+1, i)
+  j2 <- ifelse(j == n, i+2, j+1)
+  indices <- which(!duplicated(rest) & !(rest %in% mat[i,]) & !(rest %in% mat[,j]))
+  
+  for (k in indices)
+  {
+    mat[i,j] <- rest[k]
+    mat[j,i] <- rest[k]
+    matrix_list <- backTrackSolve(mat, rest[-k], matrix_list, i2, j2)
+    mat[i,j] <- 0
+    mat[j,i] <- 0
+  }
+  
+  matrix_list
+}
+
 # --------
 # EXAMPLES
 # --------
@@ -115,34 +145,7 @@ for (i in 1:100){
     i, answers[[i]][3], answers[[i]][4]))
 }
 
-backTrackSolve <- function(mat, rest, matrix_list = list(), i = 1, j = 2){
-  if (length(rest) < 1)
-    return(c(matrix_list, list(mat)))
-  
-  n <- nrow(mat)
-  
-  while (mat[i,j] != 0)
-  {
-    i <- ifelse(j == n, i+1, i)
-    j <- ifelse(j == n, i+1, j+1)
-  }
-  
-  i2 <- ifelse(j == n, i+1, i)
-  j2 <- ifelse(j == n, i+2, j+1)
-  indices <- which(!duplicated(rest) & !(rest %in% mat[i,]) & !(rest %in% mat[,j]))
-  
-  for (k in indices)
-  {
-    mat[i,j] <- rest[k]
-    mat[j,i] <- rest[k]
-    matrix_list <- backTrackSolve(mat, rest[-k], matrix_list, i2, j2)
-    mat[i,j] <- 0
-    mat[j,i] <- 0
-  }
-  
-  matrix_list
-}
-
+# Backtracking Example
 num_people <- 8
 mat <- matrix(0, nrow=num_people, ncol=num_people)
 
@@ -157,6 +160,11 @@ start <- my_timer()
 result <- backTrackSolve(mat, remaining)
 print(my_timer(start))
 
+# --------------------
+# FROM OTHER LANGUAGES
+# --------------------
+
+# MySQL
 # SELECT 
 # country_name,
 # city_name,
@@ -173,10 +181,8 @@ print(my_timer(start))
 # ORDER BY
 # country_name ASC
 # ;
-# 
-# 
-# 
-# 
+
+# C++
 # int segment(int x, vector<int> space) {
 #   int n = space.size();
 #   
