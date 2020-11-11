@@ -1,3 +1,7 @@
+# ---------
+# FUNCTIONS
+# ---------
+
 # code for interpolating missing data (from a HackerRank exam)
 calcMissing <- function(readings) {
   # Write your code here
@@ -61,10 +65,28 @@ fast_gcf <- function(a,b){
   abs(b)
 }
 
+# code for a very fast LCM
 fast_lcm <- function(a,b){
   abs(a/fast_gcf(a,b) * b)
 }
 
+# creates egyptian fractions: finite sums of unit fractions
+egyptianFrac <- function(p,q)
+{
+  quot <- ceiling(q/p)
+  rev_rem <- quot*p - q
+  
+  if (rev_rem == 0)
+    return(sprintf("1/%s", quot))
+  
+  return(sprintf("1/%s + %s", quot, breakdown(rev_rem, quot*q)))
+}
+
+# --------
+# EXAMPLES
+# --------
+
+# GCF / LCM
 answers <- vector(mode="list", length=100)
 
 for (i in 1:100)
@@ -92,28 +114,6 @@ for (i in 1:100){
     "Answer to Question %s: %s, %s", 
     i, answers[[i]][3], answers[[i]][4]))
 }
-
-breakdown <- function(p,q)
-{
-  quot <- ceiling(q/p)
-  rev_rem <- quot*p - q
-  
-  if (rev_rem == 0)
-    return(sprintf("1/%s", quot))
-  
-  return(sprintf("1/%s + %s", quot, breakdown(rev_rem, quot*q)))
-}
-
-start <- my_timer()
-for (i in 1:1000)
-  length(which(test > 1000))
-print(my_timer(start))
-start <- my_timer()
-for (i in 1:1000)
-  sum(test > 1000)
-print(my_timer(start))
-
-
 
 backTrackSolve <- function(mat, rest, matrix_list = list(), i = 1, j = 2){
   if (length(rest) < 1)
