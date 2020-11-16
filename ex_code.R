@@ -2,6 +2,15 @@
 # FUNCTIONS
 # ---------
 
+# returns the current time in seconds, rounded to 4 digits
+# If a start time is given, returns the elapsed time
+my_timer <- function(start){
+  if (missing(start))
+    start <- 0
+  
+  round(as.numeric(Sys.time()) - start, 4)
+}
+
 # code for interpolating missing data (from a HackerRank exam)
 calcMissing <- function(readings) {
   # Write your code here
