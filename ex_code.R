@@ -169,6 +169,17 @@ start <- my_timer()
 result <- backTrackSolve(mat, remaining)
 print(my_timer(start))
 
+# Find the last two nontrailing zeros of 90!
+n = 1
+for (i in 1:90)
+{
+  n = i * n
+  while (!(n %% 10))
+    n = n / 10
+  n = n %% 100
+}
+n
+
 # --------------------
 # FROM OTHER LANGUAGES
 # --------------------
