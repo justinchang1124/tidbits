@@ -2,6 +2,11 @@
 # FUNCTIONS
 # ---------
 
+# prints a single line cleanly
+print_clean <- function(msg){
+  cat(sprintf("%s\n", msg))
+}
+
 # returns the current time in seconds, rounded to 4 digits
 # If a start time is given, returns the elapsed time
 my_timer <- function(start){
@@ -234,3 +239,38 @@ n
 #   
 #   return max;
 # }
+
+eq_ans <- vector(mode="list", length=100)
+
+for (i in 1:100)
+{
+  a <- sample(-100:100, 1)
+  b <- sample(-1000:1000, 1)
+  c <- sample(-100:100, 1)
+  d <- sample(-1000:1000, 1)
+  
+  num <- d-b
+  den <- a-c
+  gcf <- fast_gcf(num, den)
+  sign <- "-"
+  if (num/den > 0)
+    sign <- ""
+  num <- abs(num / gcf)
+  den <- abs(den / gcf)
+  
+  eq_ans[[i]] <- c(a, b, c, d, num, den, sign)
+}
+
+for (i in 1:100)
+{
+  ans <- eq_ans[[i]]
+  print_clean(sprintf("%s: (%s)x + (%s) = (%s)x + (%s)", i, 
+                      ans[1], ans[2], ans[3], ans[4]))
+}
+  
+
+for (i in 1:100)
+{
+  ans <- eq_ans[[i]]
+  print_clean(sprintf("%s: x = %s%s/%s", i, ans[7], ans[5], ans[6]))
+}
